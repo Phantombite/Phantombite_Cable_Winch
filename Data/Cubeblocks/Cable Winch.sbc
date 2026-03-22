@@ -1,0 +1,359 @@
+<?xml version="1.0"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!-- ================================================================ -->
+	<!-- Cable Winch MOD - ALL IN ONE FILE                                     -->
+	<!-- Alle Blöcke, Sounds, Categories in einer Datei!                  -->
+	<!-- VERBESSERT: 10x stärkere Impulse für bessere Stabilität          -->
+	<!-- ================================================================ -->
+
+	<!-- ============================================================ -->
+	<!-- CUBE BLOCKS - Alle Cable Winch Varianten                          -->
+	<!-- ============================================================ -->
+	<CubeBlocks>
+		
+		<!-- LARGE GRID Cable Winch - 497.5m -->
+		<Definition xsi:type="MyObjectBuilder_ExtendedPistonBaseDefinition">
+			<Id>
+				<TypeId>ExtendedPistonBase</TypeId>
+				<SubtypeId>CableWinch_Base</SubtypeId>
+			</Id>
+			<DisplayName>Large Cable Winch Base</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Base.dds</Icon>
+			<Description>Large CableWinch Base - 497.5m reach</Description>
+			<CubeSize>Large</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="1"/>
+			<ModelOffset x="0" y="0" z="0"/>
+			<Model>Models\Cubes\large\CableWinch_Base.mwm</Model>
+			<UseVanillaPlacementDetection>true</UseVanillaPlacementDetection>
+			<PlaceDecals>false</PlaceDecals>
+			<Components>
+				<Component Subtype="SteelPlate" Count="10" />
+				<Component Subtype="Construction" Count="10" />
+				<Component Subtype="BulletproofGlass" Count="4" />
+				<Component Subtype="LargeTube" Count="6" />
+				<Component Subtype="Motor" Count="6" />
+				<Component Subtype="Computer" Count="3" />
+				<Component Subtype="SteelPlate" Count="6" />
+			</Components>
+			<CriticalComponent Subtype="Computer" Index="0" />
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\large\CableWinch_Base_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>CableWinch_Base</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>20</BuildTimeSeconds>
+			<PrimarySound>CableWinch_Sound</PrimarySound>
+			<ResourceSinkGroup>Utility</ResourceSinkGroup>
+			<RequiredPowerInput>0.002</RequiredPowerInput>
+			<Maximum>1000</Maximum>
+			<MaxVelocity>10</MaxVelocity>
+			<TopPart>CableWinch_Top</TopPart>
+			<Public>true</Public>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<SafetyDetach>5</SafetyDetach>
+			<SafetyDetachMax>5</SafetyDetachMax>
+			<!-- VERBESSERT: 10x stärkere Impulse! -->
+			<DefaultMaxImpulseAxis>500000</DefaultMaxImpulseAxis>
+			<DefaultMaxImpulseNonAxis>500000</DefaultMaxImpulseNonAxis>
+			<DangerousImpulseThreshold>1000000</DangerousImpulseThreshold>
+			<MaxImpulse>340282300000000000000000000000000000000</MaxImpulse>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>100</PCU>
+			<IsAirTight>false</IsAirTight>
+		</Definition>
+		
+		<!-- LARGE GRID Cable Winch TOP -->
+		<Definition>
+			<Id>
+				<TypeId>PistonTop</TypeId>
+				<SubtypeId>CableWinch_Top</SubtypeId>
+			</Id>
+			<DisplayName>Large Cable Winch Top</DisplayName>
+			<Description>Large CableWinch Top</Description>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Top.dds</Icon>
+			<Public>true</Public>
+			<CubeSize>Large</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="1" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\large\CableWinch_Top.mwm</Model>
+			<UseModelIntersection>true</UseModelIntersection>
+			<Components>
+				<Component Subtype="SteelPlate" Count="3" />
+			</Components>
+			<CriticalComponent Subtype="SteelPlate" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="1" EndY="1" />
+				<MountPoint Side="Left" StartX="0.2" StartY="0.8" EndX="0.8" EndY="1" />
+				<MountPoint Side="Right" StartX="0.2" StartY="0.8" EndX="0.8" EndY="1" />
+				<MountPoint Side="Front" StartX="0.2" StartY="0.8" EndX="0.8" EndY="1" />
+				<MountPoint Side="Back" StartX="0.2" StartY="0.8" EndX="0.8" EndY="1" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\large\CableWinch_Top_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>CableWinch_Top</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>5</BuildTimeSeconds>
+			<DestroyEffect>BlockDestroyed_Large</DestroyEffect>
+			<DestroySound>PoofExplosionCat3</DestroySound>
+			<PCU>1</PCU>
+			<IsAirTight>false</IsAirTight>
+		</Definition>
+
+		<!-- ============================================================ -->
+		
+		<!-- SMALL GRID Cable Winch (3x3) - 200m -->
+		<Definition xsi:type="MyObjectBuilder_ExtendedPistonBaseDefinition">
+			<Id>
+				<TypeId>ExtendedPistonBase</TypeId>
+				<SubtypeId>SG_CableWinch_Base</SubtypeId>
+			</Id>
+			<DisplayName>Small Cable Winch Base</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Base.dds</Icon>
+			<Description>Small Grid CableWinch - 200m reach</Description>
+			<CubeSize>Small</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="3" y="3" z="3"/>
+			<ModelOffset x="0" y="0" z="0"/>
+			<Model>Models\Cubes\small\SG_CableWinch_Base.mwm</Model>
+			<UseVanillaPlacementDetection>true</UseVanillaPlacementDetection>
+			<PlaceDecals>false</PlaceDecals>
+			<Components>
+				<Component Subtype="SteelPlate" Count="5" />
+				<Component Subtype="Construction" Count="5" />
+				<Component Subtype="BulletproofGlass" Count="2" />
+				<Component Subtype="LargeTube" Count="3" />
+				<Component Subtype="Motor" Count="3" />
+				<Component Subtype="Computer" Count="2" />
+				<Component Subtype="SteelPlate" Count="3" />
+			</Components>
+			<CriticalComponent Subtype="Computer" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Right" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Left" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Front" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Bottom" StartX="0" StartY="0" EndX="3" EndY="3" Default="true"/>
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\small\SG_CableWinch_Base_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>CableWinch_Base</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>20</BuildTimeSeconds>
+			<PrimarySound>CableWinch_Sound</PrimarySound>
+			<ResourceSinkGroup>Utility</ResourceSinkGroup>
+			<RequiredPowerInput>0.002</RequiredPowerInput>
+			<Maximum>200</Maximum>
+			<MaxVelocity>10</MaxVelocity>
+			<TopPart>SG_CableWinch_Top</TopPart>
+			<Public>true</Public>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<SafetyDetach>5</SafetyDetach>
+			<SafetyDetachMax>5</SafetyDetachMax>
+			<!-- VERBESSERT: 10x stärkere Impulse! -->
+			<DefaultMaxImpulseAxis>500000</DefaultMaxImpulseAxis>
+			<DefaultMaxImpulseNonAxis>500000</DefaultMaxImpulseNonAxis>
+			<DangerousImpulseThreshold>1000000</DangerousImpulseThreshold>
+			<MaxImpulse>340282300000000000000000000000000000000</MaxImpulse>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>100</PCU>
+			<IsAirTight>false</IsAirTight>
+		</Definition>
+		
+		<!-- SMALL GRID Cable Winch TOP (3x3) -->
+		<Definition>
+			<Id>
+				<TypeId>PistonTop</TypeId>
+				<SubtypeId>SG_CableWinch_Top</SubtypeId>
+			</Id>
+			<DisplayName>Small Cable Winch Top</DisplayName>
+			<Description>Small CableWinch Top</Description>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Top.dds</Icon>
+			<Public>true</Public>
+			<CubeSize>Small</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="3" y="3" z="3"/>
+			<ModelOffset x="0" y="0" z="0"/>
+			<Model>Models\Cubes\small\SG_CableWinch_Top.mwm</Model>
+			<UseModelIntersection>true</UseModelIntersection>
+			<Components>
+				<Component Subtype="SteelPlate" Count="15" />
+			</Components>
+			<CriticalComponent Subtype="SteelPlate" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Right" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Left" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Front" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="3" EndY="3" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\small\SG_CableWinch_Top_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>SG_CableWinch_Top</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>5</BuildTimeSeconds>
+			<DestroyEffect>BlockDestroyed_Large</DestroyEffect>
+			<DestroySound>PoofExplosionCat3</DestroySound>
+			<PCU>1</PCU>
+			<IsAirTight>false</IsAirTight>
+		</Definition>
+
+		<!-- ============================================================ -->
+		
+		<!-- TINY Cable Winch (1x1 Small Grid) - 50m -->
+		<Definition xsi:type="MyObjectBuilder_ExtendedPistonBaseDefinition">
+			<Id>
+				<TypeId>ExtendedPistonBase</TypeId>
+				<SubtypeId>CableWinch_Base_TINY</SubtypeId>
+			</Id>
+			<DisplayName>TINY Cable Winch Base</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Base_TINY.dds</Icon>
+			<Description>Compact CableWinch - 50m reach</Description>
+			<CubeSize>Small</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="3" z="1"/>
+			<ModelOffset x="0" y="0" z="0"/>
+			<Model>Models\Cubes\small\CableWinch_Base_TINY.mwm</Model>
+			<UseVanillaPlacementDetection>true</UseVanillaPlacementDetection>
+			<PlaceDecals>false</PlaceDecals>
+			<Components>
+				<Component Subtype="SteelPlate" Count="2" />
+				<Component Subtype="Construction" Count="2" />
+				<Component Subtype="BulletproofGlass" Count="1" />
+				<Component Subtype="LargeTube" Count="1" />
+				<Component Subtype="Motor" Count="1" />
+				<Component Subtype="Computer" Count="1" />
+				<Component Subtype="SteelPlate" Count="1" />
+			</Components>
+			<CriticalComponent Subtype="Computer" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Back" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Right" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Top" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" Default="true"/>
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\small\CableWinch_Base_TINY_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>CableWinch_Base_TINY</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>20</BuildTimeSeconds>
+			<PrimarySound>CableWinch_Sound</PrimarySound>
+			<ResourceSinkGroup>Utility</ResourceSinkGroup>
+			<RequiredPowerInput>0.002</RequiredPowerInput>
+			<Maximum>50</Maximum>
+			<MaxVelocity>10</MaxVelocity>
+			<TopPart>CableWinch_Top_TINY</TopPart>
+			<Public>true</Public>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<SafetyDetach>5</SafetyDetach>
+			<SafetyDetachMax>5</SafetyDetachMax>
+			<!-- VERBESSERT: 10x stärkere Impulse! -->
+			<DefaultMaxImpulseAxis>500000</DefaultMaxImpulseAxis>
+			<DefaultMaxImpulseNonAxis>500000</DefaultMaxImpulseNonAxis>
+			<DangerousImpulseThreshold>1000000</DangerousImpulseThreshold>
+			<MaxImpulse>340282300000000000000000000000000000000</MaxImpulse>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>100</PCU>
+			<IsAirTight>false</IsAirTight>
+		</Definition>
+		
+		<!-- TINY Cable Winch TOP -->
+		<Definition>
+			<Id>
+				<TypeId>PistonTop</TypeId>
+				<SubtypeId>CableWinch_Top_TINY</SubtypeId>
+			</Id>
+			<DisplayName>TINY Cable Winch Top</DisplayName>
+			<Description>TINY CableWinch Top</Description>
+			<Icon>Textures\GUI\Icons\Cubes\CableWinch_Top_TINY.dds</Icon>
+			<Public>true</Public>
+			<CubeSize>Small</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="1"/>
+			<ModelOffset x="0" y="0" z="0"/>
+			<Model>Models\Cubes\small\CableWinch_Top_TINY.mwm</Model>
+			<UseModelIntersection>true</UseModelIntersection>
+			<Components>
+				<Component Subtype="SteelPlate" Count="5" />
+			</Components>
+			<CriticalComponent Subtype="SteelPlate" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Back" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Right" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+				<MountPoint Side="Top" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00"/>
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\small\CableWinch_Top_TINY_BS1.mwm"/>
+			</BuildProgressModels>
+			<BlockPairName>CableWinch_Top_TINY</BlockPairName>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>5</BuildTimeSeconds>
+			<DestroyEffect>BlockDestroyed_Large</DestroyEffect>
+			<DestroySound>PoofExplosionCat3</DestroySound>
+			<PCU>1</PCU>
+			<IsAirTight>false</IsAirTight>
+			<PrimarySound>CableWinch_Sound</PrimarySound>
+		</Definition>
+		
+	</CubeBlocks>
+
+	<!-- ============================================================ -->
+	<!-- SOUNDS - Audio Definition                                    -->
+	<!-- ============================================================ -->
+	<Sounds>
+		<Sound>
+			<Id>
+				<TypeId>MyObjectBuilder_AudioDefinition</TypeId>
+				<SubtypeId>CableWinch_Sound</SubtypeId>
+			</Id>
+			<Category>BLOCK</Category>
+			<MaxDistance>15</MaxDistance>
+			<UpdateDistance>30</UpdateDistance>
+			<Volume>0.3</Volume>
+			<Loopable>true</Loopable>
+			<Waves>
+				<Wave Type="D2">
+					<Start>Audio\CableWinch_START.xwm</Start>
+					<Loop>Audio\CableWinch_Run4.xwm</Loop>
+					<End>Audio\CableWinch_STOP.xwm</End>
+				</Wave>
+			</Waves>
+		</Sound>
+	</Sounds>
+
+	<!-- ============================================================ -->
+	<!-- CATEGORIES - GUI Menu Organization                           -->
+	<!-- ============================================================ -->
+	<CategoryClasses>
+		<Category xsi:type="MyObjectBuilder_GuiBlockCategoryDefinition">
+			<Id>
+				<TypeId>GuiBlockCategoryDefinition</TypeId>
+				<SubtypeId/>
+			</Id>
+			<DisplayName>AtE Systems</DisplayName>
+			<Name>AtE Systems</Name>
+			<ItemIds>
+				<string>ExtendedPistonBase/CableWinch_Base</string>
+				<string>ExtendedPistonBase/SG_CableWinch_Base</string>
+				<string>ExtendedPistonBase/CableWinch_Base_TINY</string>
+			</ItemIds>
+		</Category>
+	</CategoryClasses>
+	
+</Definitions>
