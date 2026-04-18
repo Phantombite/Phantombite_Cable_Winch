@@ -46,7 +46,7 @@
 			<PrimarySound>CableWinch_Sound</PrimarySound>
 			<ResourceSinkGroup>Utility</ResourceSinkGroup>
 			<RequiredPowerInput>0.002</RequiredPowerInput>
-			<Maximum>10000</Maximum>
+			<Maximum>1000</Maximum>
 			<MaxVelocity>10</MaxVelocity>
 			<TopPart>CableWinch_Top</TopPart>
 			<Public>true</Public>
