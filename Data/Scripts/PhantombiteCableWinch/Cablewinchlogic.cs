@@ -38,8 +38,8 @@ namespace Phantombite.CableWinch
         private MyEntitySubpart _segment3;
 
         // Kabel-Konfiguration (wird einmalig in UpdateOnceBeforeFrame gesetzt)
-        private string   _cableModel;
-        private float    _segmentLength;
+        private string     _cableModel;
+        private float      _segmentLength;
         private MyStringId _ropeId;
 
         // Draw-Modus:
@@ -63,7 +63,7 @@ namespace Phantombite.CableWinch
         private List<MyEntity> _cableSegments1 = new List<MyEntity>();
         private List<MyEntity> _cableSegments2 = new List<MyEntity>();
 
-        // Eingefrorne Positionen wenn Block nicht funktional
+        // Eingefrorene Positionen wenn Block nicht funktional
         private Vector3D _freezePos1 = Vector3D.Zero;
         private Vector3D _freezePos2 = Vector3D.Zero;
         private bool     _frozen;
@@ -73,6 +73,9 @@ namespace Phantombite.CableWinch
 
         // Ob Init-Phase abgeschlossen ist
         private bool _initialized;
+
+        // PerfLevel — von CableWinchSession gesetzt
+        public static int PerfLevel { get; set; } = 0;
 
         // =====================================================================
         // LIFECYCLE
@@ -98,7 +101,6 @@ namespace Phantombite.CableWinch
 
             string modPath = block.BlockDefinition.Context.ModPath;
 
-            // Kabel-Modell und Segment-Länge je nach Blockgröße wählen
             if (block.BlockDefinition.CubeSize == MyCubeSize.Large)
             {
                 _cableModel    = modPath + @"\Models\Cubes\large\CableWinch_Cable.mwm";
@@ -106,25 +108,19 @@ namespace Phantombite.CableWinch
             }
             else if (block.BlockDefinition.Size == MediumBlockSize)
             {
-                // SG_CableWinch_Base — 3x3x3 Small Grid
                 _cableModel    = modPath + @"\Models\Cubes\small\CableWinch_Cable_Medium.mwm";
                 _segmentLength = 0.75f;
             }
             else
             {
-                // CableWinch_Base_TINY — 1x3x1 Small Grid
                 _cableModel    = modPath + @"\Models\Cubes\small\CableWinch_Cable_Tiny.mwm";
                 _segmentLength = 0.25f;
             }
 
-            // rope-ID für Linien-Fallback vorbereitend registrieren
             _ropeId = MyStringId.GetOrCompute("rope");
 
             NeedsUpdate = MyEntityUpdateEnum.EACH_FRAME;
         }
-
-        // PerfLevel — von CableWinchSession gesetzt, hier gespeichert
-        public static int PerfLevel { get; set; } = 0;
 
         public override void UpdateBeforeSimulation()
         {
@@ -134,8 +130,7 @@ namespace Phantombite.CableWinch
             if (_winch.CubeGrid?.Physics == null)
                 return;
 
-            // PerfLevel 3: Visualisierung deaktiviert
-            if (CableWinchLogic.PerfLevel >= 3)
+            if (PerfLevel >= 3)
             {
                 if (_initialized && _cableSegments1.Count > 0)
                 {
@@ -145,7 +140,6 @@ namespace Phantombite.CableWinch
                 return;
             }
 
-            // Einmalige Initialisierung beim ersten gültigen Frame
             if (!_initialized)
             {
                 if (!TryGetSubparts() || !TryGetDummies())
@@ -153,7 +147,6 @@ namespace Phantombite.CableWinch
                 _initialized = true;
             }
 
-            // Block ohne Strom: Kabel einfrieren
             if (!_winch.IsFunctional)
             {
                 _frozen = true;
@@ -161,7 +154,6 @@ namespace Phantombite.CableWinch
                 return;
             }
 
-            // Wiederherstellung nach Einfrieren: Subparts und Dummies neu laden
             if (_frozen)
             {
                 _frozen = false;
@@ -211,7 +203,6 @@ namespace Phantombite.CableWinch
             if (baseDummies.Count == 0 || tipDummies.Count == 0)
                 return false;
 
-            // Passende Dummy-Paare suchen (gleicher Name auf Base und Tip)
             var pairs = new List<KeyValuePair<string, string>>();
             foreach (var kv in baseDummies)
             {
@@ -238,8 +229,6 @@ namespace Phantombite.CableWinch
             }
             else
             {
-                // Mehr als 2 Paare: Linien-Fallback
-                // Benötigt rope TransparentMaterial + rope.dds Textur
                 _linePairs = new List<KeyValuePair<IMyModelDummy, IMyModelDummy>>();
                 foreach (var pair in pairs)
                 {
@@ -265,23 +254,15 @@ namespace Phantombite.CableWinch
                     DrawLineFallback();
                     break;
                 case 1:
-                    UpdateCableSegments(
-                        _cableStart1, _cableEnd1,
-                        ref _cableSegments1, ref _freezePos1);
+                    UpdateCableSegments(_cableStart1, _cableEnd1, ref _cableSegments1, ref _freezePos1);
                     break;
                 case 2:
-                    UpdateCableSegments(
-                        _cableStart1, _cableEnd1,
-                        ref _cableSegments1, ref _freezePos1);
-                    UpdateCableSegments(
-                        _cableStart2, _cableEnd2,
-                        ref _cableSegments2, ref _freezePos2);
+                    UpdateCableSegments(_cableStart1, _cableEnd1, ref _cableSegments1, ref _freezePos1);
+                    UpdateCableSegments(_cableStart2, _cableEnd2, ref _cableSegments2, ref _freezePos2);
                     break;
             }
         }
 
-        // Mode 0: einfache Linie — Fallback wenn >2 Dummy-Paare
-        // Benötigt rope TransparentMaterial + rope.dds in Data/
         private void DrawLineFallback()
         {
             if (_linePairs == null || _segment3 == null)
@@ -295,7 +276,6 @@ namespace Phantombite.CableWinch
             }
         }
 
-        // Mode 1 + 2: physische MWM-Kabel-Segmente
         private void UpdateCableSegments(
             IMyModelDummy dummyStart, IMyModelDummy dummyEnd,
             ref List<MyEntity> segments, ref Vector3D freezePos)
@@ -309,7 +289,6 @@ namespace Phantombite.CableWinch
             Vector3D posStart = Vector3D.Transform(dummyStart.Matrix.Translation, _winch.WorldMatrix);
             Vector3D posEnd   = Vector3D.Transform(dummyEnd.Matrix.Translation,   _segment3.WorldMatrix);
 
-            // Eingefrorne Position in lokalem Raum speichern
             freezePos = Vector3D.Transform(posEnd, _winch.PositionComp.WorldMatrixInvScaled);
 
             int targetCount = MathHelper.RoundToInt((float)(posEnd - posStart).Length() / _segmentLength);
@@ -319,7 +298,6 @@ namespace Phantombite.CableWinch
 
             if (segments.Count < targetCount)
             {
-                // Fehlende Segmente alle auf einmal spawnen
                 int toAdd = targetCount - segments.Count;
                 for (int i = 0; i < toAdd; i++)
                 {
@@ -334,14 +312,12 @@ namespace Phantombite.CableWinch
             }
             else if (segments.Count > targetCount)
             {
-                // Ein Segment pro Frame entfernen
                 var last = segments[segments.Count - 1];
                 segments.RemoveAt(segments.Count - 1);
                 last.Close();
             }
             else
             {
-                // Segmentanzahl stimmt — nur Positionen aktualisieren
                 double offset = 0;
                 foreach (var seg in segments)
                 {
@@ -354,7 +330,6 @@ namespace Phantombite.CableWinch
             }
         }
 
-        // Kabel an letzter bekannter Position einfrieren
         private void FreezeCables()
         {
             switch (_drawMode)
@@ -395,7 +370,6 @@ namespace Phantombite.CableWinch
             if (_rotor == null || _rotor.Closed)
                 return;
 
-            // Nur animieren wenn sich die Kolbenposition verändert hat
             if (_winch.CurrentPosition == _lastPistonPos)
                 return;
 
@@ -440,125 +414,4 @@ namespace Phantombite.CableWinch
             segments.Clear();
         }
     }
-
-    [MySessionComponentDescriptor(MyUpdateOrder.NoUpdate)]
-    public class CableWinchSession : MySessionComponentBase
-    {
-        private const long   CORE_CHANNEL       = 1995000L;
-        private const long   MY_CHANNEL         = 1995002L;
-        private const long   LOG_CHANNEL        = 1995999L;
-        private const string MOD_NAME           = "Phantombite_CableWinch";
-        private const string VERSION            = "1.0.0";
-        private const ushort PERFLEVEL_PACKET   = 19502;
-
-        private bool _initialized = false;
-        private int  _logLevel    = 0;
-
-        public override void LoadData()
-        {
-            try
-            {
-                MyAPIGateway.Multiplayer.RegisterMessageHandler(PERFLEVEL_PACKET, OnPerfLevelPacket);
-                if (MyAPIGateway.Multiplayer.IsServer)
-                    MyAPIGateway.Utilities.RegisterMessageHandler(MY_CHANNEL, OnCoreMessage);
-                Log("LoadData — warte auf Core READY");
-            }
-            catch (Exception ex)
-            {
-                MyLog.Default.WriteLineAndConsole("[PB.cablewinch] [ERROR] LoadData: " + ex);
-            }
-        }
-
-        private void OnCoreMessage(object data)
-        {
-            try
-            {
-                string msg = data as string;
-                if (string.IsNullOrEmpty(msg)) return;
-
-                if (msg == "READY")
-                {
-                    SendRegister();
-                    Log("READY empfangen — REGISTER gesendet");
-                    return;
-                }
-                if (msg.StartsWith("LOGLEVEL|"))
-                {
-                    int lvl;
-                    if (int.TryParse(msg.Substring(9), out lvl))
-                        _logLevel = Math.Max(0, Math.Min(3, lvl));
-                    Log("LOGLEVEL gesetzt: " + _logLevel, 1);
-                    return;
-                }
-                if (msg.StartsWith("PERFLEVEL|"))
-                {
-                    int lvl;
-                    if (int.TryParse(msg.Substring(10), out lvl))
-                    {
-                        lvl = Math.Max(0, Math.Min(3, lvl));
-                        CableWinchLogic.PerfLevel = lvl;
-                        Log("PERFLEVEL gesetzt: " + lvl + (lvl >= 3 ? " — Visualisierung AUS" : " — Visualisierung AN"));
-                        MyAPIGateway.Utilities.SendModMessage(CORE_CHANNEL, "PERFACK|cablewinch|" + lvl);
-                        if (MyAPIGateway.Multiplayer.IsServer && MyAPIGateway.Multiplayer.MultiplayerActive)
-                            MyAPIGateway.Multiplayer.SendMessageToOthers(PERFLEVEL_PACKET, new byte[] { (byte)lvl });
-                    }
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                MyLog.Default.WriteLineAndConsole("[PB.cablewinch] [ERROR] OnCoreMessage: " + ex);
-            }
-        }
-
-        private void OnPerfLevelPacket(byte[] data)
-        {
-            try
-            {
-                if (data == null || data.Length == 0) return;
-                CableWinchLogic.PerfLevel = Math.Max(0, Math.Min(3, (int)data[0]));
-                Log("PERFLEVEL vom Server empfangen: " + CableWinchLogic.PerfLevel, 1);
-            }
-            catch (Exception ex)
-            {
-                MyLog.Default.WriteLineAndConsole("[PB.cablewinch] [ERROR] OnPerfLevelPacket: " + ex);
-            }
-        }
-
-        private void SendRegister()
-        {
-            MyAPIGateway.Utilities.SendModMessage(CORE_CHANNEL,
-                "REGISTER|cablewinch|Phantombite CableWinch|" + VERSION + "|" + MY_CHANNEL);
-            MyAPIGateway.Utilities.SendModMessage(CORE_CHANNEL, "PERFACK|cablewinch|0");
-        }
-
-        protected override void UnloadData()
-        {
-            try
-            {
-                if (MyAPIGateway.Utilities != null && MyAPIGateway.Multiplayer.IsServer)
-                    MyAPIGateway.Utilities.UnregisterMessageHandler(MY_CHANNEL, OnCoreMessage);
-                if (MyAPIGateway.Multiplayer != null)
-                    MyAPIGateway.Multiplayer.UnregisterMessageHandler(PERFLEVEL_PACKET, OnPerfLevelPacket);
-                CableWinchLogic.PerfLevel = 0;
-            }
-            catch (Exception ex)
-            {
-                MyLog.Default.WriteLineAndConsole("[PB.cablewinch] [ERROR] UnloadData: " + ex);
-            }
-        }
-
-        private void Log(string msg, int level = 0)
-        {
-            if (level > _logLevel) return;
-            try
-            {
-                MyLog.Default.WriteLineAndConsole("[PB.cablewinch] " + msg);
-                MyAPIGateway.Utilities.SendModMessage(LOG_CHANNEL,
-                    "LOG|" + MOD_NAME + "|" + level + "|CableWinch_Session|" + msg);
-            }
-            catch { }
-        }
-    }
-
 }
