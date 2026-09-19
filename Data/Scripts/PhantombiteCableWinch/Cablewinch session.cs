@@ -11,7 +11,7 @@ namespace Phantombite.CableWinch
         private const long   CORE_CHANNEL     = 1995000L;
         private const long   MY_CHANNEL       = 1995002L;
         private const long   LOG_CHANNEL      = 1995999L;
-        private const string MOD_NAME         = "Phantombite_CableWinch";
+        private const string MOD_NAME         = "Phantombite_Cable_Winch";
         private const string VERSION          = "1.0.0";
         private const ushort PERFLEVEL_PACKET = 19502;
 
