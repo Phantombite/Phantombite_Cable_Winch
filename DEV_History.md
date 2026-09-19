@@ -1,5 +1,13 @@
 # DEV History — PhantomBite Cable Winch
 
+## 2026-09-19 — Bereinigung
+- Der Mod meldete sich im Log als `Phantombite_CableWinch`, der Core kennt `Phantombite_Cable_Winch`.
+  Dadurch gingen Debug-Meldungen (Level 1/2) verloren. Name korrigiert; der Core normalisiert Namen jetzt
+  zusätzlich selbst.
+- Kompiliert fehlerfrei. Die Block-Logik wurde gelesen, aber nicht verändert.
+- Offen: `TryGetDummies` setzt `PulleyWire_1`/`_2` als feste Namen voraus, weicht ein Dummy-Name ab, entsteht
+  jedes Frame eine Ausnahme.
+
 ## 2026-03-22 — v1.0.0 — Initialer Release
 
 - Pulley System aus NimbusMod extrahiert und als eigenständiger Mod veröffentlicht
